@@ -118,3 +118,18 @@ private_keys/
 *.bak
 *.backup
 *~
+
+# Development temp files
+*-summary.sh
+*-verification.sh
+*-status.sh
+demo-*.sh
+cart-*.sh
+blue-*.sh
+
+# Local environment files (keep templates)
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
