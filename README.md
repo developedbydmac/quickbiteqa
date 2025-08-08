@@ -7,7 +7,7 @@ A complete infrastructure and application setup for QuickBite restaurant's QA en
 | Day | Phase Description | Release |
 |-----|--------------------|---------|
 | ✅ Day 1 | Infra + Backend Setup (S3 + FastAPI) | [v1.0-day1](https://github.com/developedbydmac/quickbiteqa/releases/tag/v1.0-day1) |
-| ✅ Day 2 | Frontend Development (React + API Integration) | [v1.0-day2](https://github.com/developedbydmac/quickbiteqa/releases/tag/v1.0-day2) |
+| ✅ Day 2 | Frontend Development (React + API Integration) | [v2.0-day2](https://github.com/developedbydmac/quickbiteqa/releases/tag/v2.0-day2) |
 | 🔒 Day 3 | Cypress + Pactum Testing | _Coming Soon_ |
 | 🔒 Day 4 | CI/CD Pipelines + Smoke Testing | _Coming Soon_ |
 | 🔒 Day 5 | Wrap-Up, Blog + Screenshots | _Coming Soon_ |
@@ -16,10 +16,9 @@ A complete infrastructure and application setup for QuickBite restaurant's QA en
 **Date**: August 7, 2025  
 **Status**: Infrastructure deployed, FastAPI running, ready for frontend development
 
-## 🎉 **Day 2 - COMPLETE!** ✅
+## 🚀 **Day 2 - COMPLETED!** ✅
 **Date**: August 7, 2025  
-**Status**: React frontend MVP complete, full API integration working  
-**Release**: [v1.0-day2](https://github.com/developedbydmac/quickbiteqa/releases/tag/v1.0-day2)
+**Status**: React frontend MVP complete, all features working, tagged as v2.0-day2
 
 ### **Current Functionality**
 - ✅ **Homepage**: Hero section with navigation to menu
