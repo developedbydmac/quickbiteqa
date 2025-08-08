@@ -46,10 +46,11 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      // Create form data for FastAPI OAuth2 endpoint
-      const loginData = new FormData();
-      loginData.append('username', formData.username);
-      loginData.append('password', formData.password);
+      // Send JSON data to match backend expectations
+      const loginData = {
+        username: formData.username,
+        password: formData.password
+      };
 
       const response = await apiService.login(loginData);
       
@@ -77,13 +78,6 @@ const LoginPage = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleTestLogin = () => {
-    setFormData({
-      username: 'testuser',
-      password: 'testpass'
-    });
   };
 
   if (success) {
@@ -166,16 +160,34 @@ const LoginPage = () => {
           {/* Test credentials helper */}
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              For testing purposes:
+              For testing purposes - Available users:
             </Typography>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={handleTestLogin}
-              disabled={loading}
-            >
-              Use Test Credentials
-            </Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => setFormData({ username: 'admin', password: 'admin123' })}
+                disabled={loading}
+              >
+                Admin (admin/admin123)
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => setFormData({ username: 'customer', password: 'customer123' })}
+                disabled={loading}
+              >
+                Customer (customer/customer123)
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => setFormData({ username: 'staff', password: 'staff123' })}
+                disabled={loading}
+              >
+                Staff (staff/staff123)
+              </Button>
+            </Box>
           </Box>
 
           <Box sx={{ textAlign: 'center', mt: 2 }}>

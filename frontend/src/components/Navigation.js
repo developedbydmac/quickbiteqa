@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { apiService } from '../services/api';
+import { cartUtils } from '../utils/cart';
 
 const Navigation = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,14 +42,7 @@ const Navigation = () => {
     
     // Update cart count from localStorage
     const updateCartCount = () => {
-      const savedCart = localStorage.getItem('cart');
-      if (savedCart) {
-        const cart = JSON.parse(savedCart);
-        const count = cart.reduce((total, item) => total + item.quantity, 0);
-        setCartCount(count);
-      } else {
-        setCartCount(0);
-      }
+      setCartCount(cartUtils.getCartItemCount());
     };
 
     updateCartCount();
