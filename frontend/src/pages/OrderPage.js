@@ -22,9 +22,11 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
+import { cartUtils } from '../utils/cart';
 
 const OrderPage = () => {
   const [cart, setCart] = useState([]);
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
     email: '',
@@ -39,33 +41,42 @@ const OrderPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // In a real app, cart would come from context/state management
-    // For now, using localStorage as a simple solution
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
+    // Load cart using cart utilities for consistency
+    const savedCart = cartUtils.getCart();
+    setCart(savedCart);
+    setIsCartLoaded(true); // Mark cart as loaded
+    
+    // Listen for cart updates from other components
+    const handleCartUpdate = () => {
+      setCart(cartUtils.getCart());
+    };
+    
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
   }, []);
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    // Only save cart after it has been initially loaded to prevent clearing existing cart
+    if (isCartLoaded) {
+      cartUtils.saveCart(cart);
+    }
+  }, [cart, isCartLoaded]);
 
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity <= 0) {
       removeFromCart(itemId);
       return;
     }
-    setCart(cart.map(item => 
-      item.id === itemId 
-        ? { ...item, quantity: newQuantity }
-        : item
-    ));
+    const updatedCart = cartUtils.updateQuantity(itemId, newQuantity);
+    setCart(updatedCart);
   };
 
   const removeFromCart = (itemId) => {
-    setCart(cart.filter(item => item.id !== itemId));
+    const updatedCart = cartUtils.removeFromCart(itemId);
+    setCart(updatedCart);
   };
 
   const getTotal = () => {
