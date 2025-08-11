@@ -41,7 +41,7 @@ const apiService = {
   // Authentication
   login: async (credentials) => {
     try {
-      const response = await apiClient.post('/auth/login', credentials);
+      const response = await apiClient.post('/login', credentials);
       if (response.data.access_token) {
         localStorage.setItem('token', response.data.access_token);
       }

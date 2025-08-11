@@ -28,3 +28,19 @@ output "quickbite_green_website_domain" {
   description = "Website domain for Green bucket"
   value       = aws_s3_bucket_website_configuration.quickbite_green_website.website_domain
 }
+
+# API Gateway outputs
+output "api_gateway_url" {
+  description = "URL of the API Gateway"
+  value       = aws_api_gateway_deployment.quickbite_api.invoke_url
+}
+
+output "lambda_function_name" {
+  description = "Name of the Lambda function"
+  value       = aws_lambda_function.quickbite_api.function_name
+}
+
+output "api_gateway_stage" {
+  description = "API Gateway deployment stage"
+  value       = aws_api_gateway_deployment.quickbite_api.stage_name
+}

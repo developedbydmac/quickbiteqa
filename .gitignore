@@ -18,6 +18,10 @@ terraform.tfstate.backup
 *.tfplan
 *.tfstate.*
 
+# Lambda Deployment Packages
+lambda-package/
+*.zip
+
 # Python
 __pycache__/
 *.py[cod]
