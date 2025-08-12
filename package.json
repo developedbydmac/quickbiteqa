@@ -1,0 +1,29 @@
+{
+  "name": "quickbiteqa",
+  "version": "2.0.0",
+  "description": "QuickBite QA Restaurant Ordering System",
+  "main": "index.js",
+  "scripts": {
+    "test:api": "cross-env NODE_PATH=. mocha tests/api/*.spec.js --timeout 10000",
+    "test:ui": "cross-env TEST_USER=$(grep TEST_USER tests/.env | cut -d '=' -f2) TEST_PASS=$(grep TEST_PASS tests/.env | cut -d '=' -f2) cypress run",
+    "test": "npm run test:api && npm run test:ui",
+    "cypress:open": "cross-env TEST_USER=$(grep TEST_USER tests/.env | cut -d '=' -f2) TEST_PASS=$(grep TEST_PASS tests/.env | cut -d '=' -f2) cypress open",
+    "cypress:run": "cross-env TEST_USER=$(grep TEST_USER tests/.env | cut -d '=' -f2) TEST_PASS=$(grep TEST_PASS tests/.env | cut -d '=' -f2) cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^13.15.0",
+    "pactum": "^3.8.0",
+    "dotenv": "^16.4.5",
+    "mocha": "^10.8.2",
+    "cross-env": "^7.0.3"
+  },
+  "keywords": [
+    "restaurant",
+    "ordering",
+    "react",
+    "fastapi",
+    "aws"
+  ],
+  "author": "developedbydmac",
+  "license": "MIT"
+}
