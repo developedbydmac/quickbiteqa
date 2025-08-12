@@ -1,0 +1,92 @@
+name: Deploy to Blue Environment
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  deploy-blue:
+    runs-on: ubuntu-latest
+    environment: blue
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build frontend
+      run: npm run build
+      env:
+        NODE_ENV: production
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Deploy to S3 Blue bucket
+      run: |
+        aws s3 sync dist/ s3://quickbite-blue --delete --cache-control "max-age=86400"
+        echo "🚀 Deployed to Blue environment: http://quickbite-blue.s3-website-us-east-1.amazonaws.com"
+
+    - name: Run Cypress smoke tests
+      uses: cypress-io/github-action@v6
+      with:
+        spec: cypress/e2e/quickbite_smoke_ci.cy.js
+        wait-on: ${{ secrets.SITE_BASE_BLUE }}
+        wait-on-timeout: 120
+      env:
+        CYPRESS_SITE_BASE: ${{ secrets.SITE_BASE_BLUE }}
+        CYPRESS_API_BASE: https://vhhkqwkf0l.execute-api.us-east-1.amazonaws.com/dev
+        CYPRESS_TEST_USER: ${{ secrets.TEST_USER }}
+        CYPRESS_TEST_PASS: ${{ secrets.TEST_PASS }}
+
+    - name: Upload Cypress screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: cypress-screenshots-blue
+        path: cypress/screenshots
+        retention-days: 7
+
+    - name: Upload Cypress videos
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: cypress-videos-blue
+        path: cypress/videos
+        retention-days: 7
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: cypress-results-blue
+        path: |
+          cypress/reports
+          cypress/results
+        retention-days: 7
+
+    - name: Deployment summary
+      run: |
+        echo "## 🟦 Blue Deployment Complete" >> $GITHUB_STEP_SUMMARY
+        echo "- **Environment**: Blue (Production)" >> $GITHUB_STEP_SUMMARY
+        echo "- **URL**: http://quickbite-blue.s3-website-us-east-1.amazonaws.com" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Tests**: Smoke tests completed ✅" >> $GITHUB_STEP_SUMMARY

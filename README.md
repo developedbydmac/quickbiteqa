@@ -23,6 +23,23 @@ Experience the full application in action:
 - **⚡ Fast Performance**: Built with Vite and optimized for speed
 - **🧪 Fully Tested**: 100% test coverage with automated E2E and API testing
 - **☁️ Cloud Ready**: Deployed on AWS serverless infrastructure
+- **🚀 CI/CD Pipeline**: Automated blue-green deployment with GitHub Actions
+
+## 🔄 Deployment Pipeline
+
+**DAY 4 ACHIEVEMENT**: Production-ready CI/CD with blue-green deployment strategy
+
+| Workflow | Trigger | Environment | Status | Link |
+|----------|---------|-------------|--------|------|
+| **Deploy Blue** | Push to main | Production | ✅ Active | [View Workflow](../../actions/workflows/deploy-blue.yml) |
+| **Deploy Green** | Manual dispatch | Staging → Production | ✅ Active | [View Workflow](../../actions/workflows/deploy-green.yml) |
+
+### 🎯 Pipeline Features
+- **Automated Testing**: Comprehensive smoke tests on every deployment
+- **Zero Downtime**: Blue-green strategy with instant rollback capability
+- **Manual Approval**: Production promotion requires explicit approval
+- **Artifact Storage**: Complete test results, screenshots, and videos preserved
+- **Security**: All credentials managed via GitHub Secrets
 
 ## 🛠️ Technology Stack
 
