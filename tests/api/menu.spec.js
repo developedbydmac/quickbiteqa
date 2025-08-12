@@ -1,4 +1,5 @@
 const pactum = require('pactum')
+const { expect } = require('chai')
 const { API_BASE } = require('../helpers/env')
 
 describe('Menu API Tests', () => {
@@ -37,24 +38,24 @@ describe('Menu API Tests', () => {
     await pactum
       .spec()
       .get('/menu')
-      .withQueryParams('category', 'chicken')
+      .withQueryParams('category', 'burgers')
       .expectStatus(200)
       .expectJsonSchema({
         type: 'array'
       })
-      .stores('chickenItems', '.')
+      .stores('burgerItems', '.')
     
-    // Verify all returned items have chicken category
+    // Verify all returned items have burgers category
     const response = await pactum
       .spec()
       .get('/menu')
-      .withQueryParams('category', 'chicken')
+      .withQueryParams('category', 'burgers')
       .expectStatus(200)
     
     if (response.json.length > 0) {
       response.json.forEach(item => {
         if (item.category) {
-          expect(item.category.toLowerCase()).to.include('chicken')
+          expect(item.category.toLowerCase()).to.include('burgers')
         }
       })
     }
